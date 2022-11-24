@@ -35,6 +35,9 @@ const Playergoalkeeping = sequelize.define("goalkeeper", {
     matchplayed: {
         type: Sequelize.INTEGER,
         allowNull: false,
+    }, Playerid: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
     },
 
 });

@@ -41,15 +41,15 @@ const Playerdistribution = sequelize.define("playerdistribution", {
         allowNull: false,
     },
 
-    minutes_played: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
+
     matchplayed: {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
-
+    Playerid: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+    },
 });
 
 module.exports = Playerdistribution

@@ -48,6 +48,10 @@ const Playergoals = sequelize.define("playergoals", {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    Playerid: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+    },
 
 });
 

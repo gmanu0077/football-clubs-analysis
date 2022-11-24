@@ -1,15 +1,17 @@
 const sequelize = require("./util/database");
-const playerattacks = require('./model/attacking_schema')
 const playerattempts = require('./model/attempts_schema')
-const playerdefending = require('./model/defending_schema')
-const playerdisciplinary = require('./model/disciplinary_schema')
 const playerdistribution = require('./model/distribution_schema')
 const Playergoalkeeping = require('./model/goalkeeping_schema')
 const playergoals = require('./model/goals_schema')
 const playerkeystats = require('./model/keystats_schema')
 const Player = require("./model/player_schema");
 const csv = require('csv-parser')
-const fs = require('fs')
+const fs = require('fs');
+const Playerdistribution = require("./model/distribution_schema");
+const Playerdiscipline = require("./model/disciplinary_schema");
+const Playerdefending = require("./model/defending_schema");
+const PlayerAttempts = require("./model/attempts_schema");
+const PlayerAttacking = require("./model/attacking_schema");
 
 const attacking = []
 const attempts = []
@@ -78,82 +80,325 @@ async function getdata() {
 
     //sql queries start
 
-    Player.hasOne(playergoals);
+
+
 
     sequelize
-        .sync({ force: true })
+        .sync({})
 
         .then(() => {
-            keystats.map(name => {
+            keystats.map(async (name) => {
                 if (name.player_name.split(' ').length > 1)
-                    return Player.create({ firstname: `${name.player_name.split(' ').slice(0, -1).join(' ')}`, lastname: `${name.player_name.split(' ').slice(-1).join(' ')}`, club: `${name.club}` })
-                else return Player.create({ firstname: `${name.player_name}`, lastname: "", club: `${name.club}` })
+                    return await new Promise((resolve, reject) => { resolve(Player.create({ firstname: `${name.player_name.split(' ').slice(0, -1).join(' ')}`, lastname: `${name.player_name.split(' ').slice(-1).join(' ')}`, club: `${name.club}` })) })
+                else return await new Promise((resolve, reject) => { resolve(Player.create({ firstname: `${name.player_name}`, lastname: "", club: `${name.club}` })) })
             })
 
         })
         .then(() => {
 
-            // goals.map((player) => {
-            let id = ""
-            //if (player.player_name.split(' ').length > 1) {
+            goals.map(async (player) => {
 
-            Player.findOne({ where: { firstname: 'Aaronson' } })
-                .then((data) => {
-                    //    if (!data) return
-                    id = JSON.stringify(data?.dataValues.id);
-                    console.log(data, "nnnnnnnnn.......");
+                if (player.player_name.split(' ').length > 1) {
 
-                    // return playergoals.create({
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(0, -1).join(' ') } })
+                        .then(async (data) => {
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    playergoals.create({
 
-                    //     position: `${player.position}`, goals: `${player.goals}`, right_foot: `${player.right_foot}`,
-                    //     left_foot: `${player.left_foot}`, header: `${player.headers}`, others: `${player.others}`, inside_area: `${player.inside_area}`,
-                    //     outside_area: `${player.outside_areas}`, penalties: `${player.penalties}`,
-                    //     matchplayed: `${player.match_played}`, Playerid: id
-                    // });
+                                        position: `${player.position}`, goals: `${player.goals}`, right_foot: `${player.right_foot}`,
+                                        left_foot: `${player.left_foot}`, header: `${player.headers}`, others: `${player.others}`, inside_area: `${player.inside_area}`,
+                                        outside_area: `${player.outside_areas}`, penalties: `${player.penalties}`,
+                                        matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    });
+                                })
+                            }
+                        })
 
-                })
+                } else {
 
-            // } else {
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
+                        .then(async (data) => {
 
-            //     Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
-            //         .then((data) => {
-            //             if (!data) return
-            //             console.log(data?.dataValues.id, "nnnnnnnnn.......");
-            //             id = JSON.stringify(data?.dataValues.id);
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    playergoals.create({
 
-            //             return playergoals.create({
-
-            //                 position: `${player.position}`, goals: `${player.goals}`, right_foot: `${player.right_foot}`,
-            //                 left_foot: `${player.left_foot}`, header: `${player.headers}`, others: `${player.others}`, inside_area: `${player.inside_area}`,
-            //                 outside_area: `${player.outside_areas}`, penalties: `${player.penalties}`,
-            //                 matchplayed: `${player.match_played}`, Playerid: id
-            //             });
-
-            //         })
-            // }
-
-
-
-
-
-
-
-            // })
+                                        position: `${player.position}`, goals: `${player.goals}`, right_foot: `${player.right_foot}`,
+                                        left_foot: `${player.left_foot}`, header: `${player.headers}`, others: `${player.others}`, inside_area: `${player.inside_area}`,
+                                        outside_area: `${player.outside_areas}`, penalties: `${player.penalties}`,
+                                        matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    });
+                                })
+                            }
+                        })
+                }
+            })
         })
-        // .then(() => {
+        .then(() => {
+            keystats.map(async (player) => {
 
-        //     keystats.map((player) => {
-        //         return playerkeystats.create({
-        //             position: `${player.position}`, minutes_played: `${player.minutes_played}`,
-        //             matchplayed: `${player.match_played}`, goals: `${player.goals}`, assist: `${player.assists}`, distance_covered: `${player.distance_covered}`
-        //         });
-        //     })
+                if (player.player_name.split(' ').length > 1) {
 
-        // })
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(0, -1).join(' ') } })
+                        .then(async (data) => {
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    let distance_covered;
+                                    if (player.distance_covered == '-') distance_covered = null;
+                                    else distance_covered = player.distance_covered
+                                    resolve(playerkeystats.create({
+                                        position: `${player.position}`, minutes_played: `${player.minutes_played}`,
+                                        matchplayed: `${player.match_played}`, goals: `${player.goals}`, assist: `${player.assists}`, distance_covered: `${distance_covered}`,
+                                        Playerid: `${data.dataValues.id}`
+                                    })
+                                    )
+                                })
+                            }
+                        })
 
-        // .then(orders => {
-        //     console.log("All the Orders are : ", orders);
-        // })
+                } else {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
+                        .then(async (data) => {
+
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(playerkeystats.create({
+
+                                        position: `${player.position}`, minutes_played: `${player.minutes_played}`,
+                                        matchplayed: `${player.match_played}`, goals: `${player.goals}`, assist: `${player.assists}`, distance_covered: `${player.distance_covered}`, Playerid: `${data.dataValues.id}`
+                                    }))
+                                })
+                            }
+                        })
+                }
+            })
+        })
+
+        .then(() => {
+            goalkeeping.map(async (player) => {
+
+                if (player.player_name.split(' ').length > 1) {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(0, -1).join(' ') } })
+                        .then(async (data) => {
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(Playergoalkeeping.create({
+                                        position: `${player.position}`, saved: `${player.saved}`, conceded: `${player.conceded}`, saved_penalties: `${player.saved_penalties}`, cleansheets: `${player.cleansheets}`,
+                                        punches_made: `${player.punches_made}`,
+                                        matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    })
+                                    )
+                                })
+                            }
+                        })
+
+                } else {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
+                        .then(async (data) => {
+
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(Playergoalkeeping.create({
+
+                                        position: `${player.position}`, saved: `${player.saved}`, conceded: `${player.conceded}`, saved_penalties: `${player.saved_penalties}`, cleansheets: `${player.cleansheets}`,
+                                        punches_made: `${player.punches_made}`,
+                                        matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    }))
+                                })
+                            }
+                        })
+                }
+            })
+        })
+        .then(() => {
+            distribution.map(async (player) => {
+
+                if (player.player_name.split(' ').length > 1) {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(0, -1).join(' ') } })
+                        .then(async (data) => {
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(Playerdistribution.create({
+                                        position: `${player.position}`, saved: `${player.saved}`, pass_accuracy: `${player.pass_accuracy}`, pass_attempted: `${player.pass_attempted}`, pass_completed: `${player.pass_completed}`,
+                                        cross_accuracy: `${player.cross_accuracy}`, cross_attempted: `${player.cross_attempted}`, cross_completed: `${player.cross_completed}`,
+                                        freekicks_taken: `${player.freekicks_taken}`, matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    })
+                                    )
+                                })
+                            }
+                        })
+
+                } else {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
+                        .then(async (data) => {
+
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(playerdistribution.create({
+
+                                        position: `${player.position}`, saved: `${player.saved}`, pass_accuracy: `${player.pass_accuracy}`, pass_attempted: `${player.pass_attempted}`, pass_completed: `${player.pass_completed}`,
+                                        cross_accuracy: `${player.cross_accuracy}`, cross_attempted: `${player.cross_attempted}`, cross_completed: `${player.cross_completed}`,
+                                        freekicks_taken: `${player.freekicks_taken}`, matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    }))
+                                })
+                            }
+                        })
+                }
+            })
+        })
+        .then(() => {
+            disciplinary.map(async (player) => {
+
+                if (player.player_name.split(' ').length > 1) {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(0, -1).join(' ') } })
+                        .then(async (data) => {
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(Playerdiscipline.create({
+                                        position: `${player.position}`, fouls_comitted: `${player.fouls_committed}`, fouls_suffered: `${player.fouls_suffered}`, red: `${player.red}`, yellow: `${player.yellow}`,
+                                        minutes_played: `${player.minutes_played}`, matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    })
+                                    )
+                                })
+                            }
+                        })
+
+                } else {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
+                        .then(async (data) => {
+
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(Playerdiscipline.create({
+
+                                        position: `${player.position}`, fouls_comitted: `${player.fouls_committed}`, fouls_suffered: `${player.fouls_suffered}`, red: `${player.red}`, yellow: `${player.yellow}`,
+                                        minutes_played: `${player.minutes_played}`, matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    }))
+                                })
+                            }
+                        })
+                }
+            })
+        })
+        .then(() => {
+            defending.map(async (player) => {
+
+                if (player.player_name.split(' ').length > 1) {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(0, -1).join(' ') } })
+                        .then(async (data) => {
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(Playerdefending.create({
+                                        position: `${player.position}`, balls_recovered: `${player.balls_recovered}`, tackles: `${player.tackles}`, t_won: `${player.t_won}`, t_lost: `${player.t_lost}`,
+                                        clearance: `${player.clearance_attempted}`, matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    })
+                                    )
+                                })
+                            }
+                        })
+
+                } else {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
+                        .then(async (data) => {
+
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(Playerdefending.create({
+
+                                        position: `${player.position}`, balls_recovered: `${player.balls_recovered}`, tackles: `${player.tackles}`, t_won: `${player.t_won}`, t_lost: `${player.t_lost}`,
+                                        clearance: `${player.clearance_attempted}`, matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    }))
+                                })
+                            }
+                        })
+                }
+            })
+        })
+        .then(() => {
+            attempts.map(async (player) => {
+
+                if (player.player_name.split(' ').length > 1) {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(0, -1).join(' ') } })
+                        .then(async (data) => {
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(playerattempts.create({
+                                        position: `${player.position}`, total_attempts: `${player.total_attempts}`, on_target: `${player.on_target}`, off_target: `${player.off_target}`, blocked: `${player.blocked}`,
+                                        matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    })
+                                    )
+                                })
+                            }
+                        })
+
+                } else {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
+                        .then(async (data) => {
+
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(PlayerAttempts.create({
+
+                                        position: `${player.position}`, total_attempts: `${player.total_attempts}`, on_target: `${player.on_target}`, off_target: `${player.off_target}`, blocked: `${player.blocked}`,
+                                        matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    }))
+                                })
+                            }
+                        })
+                }
+            })
+        })
+
+        .then(() => {
+            attacking.map(async (player) => {
+
+                if (player.player_name.split(' ').length > 1) {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(0, -1).join(' ') } })
+                        .then(async (data) => {
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(PlayerAttacking.create({
+                                        position: `${player.position}`, assist: `${player.assists}`, corner_taken: `${player.corner_taken}`, offsides: `${player.offsides}`, dribbles: `${player.dribbles}`,
+                                        matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    })
+                                    )
+                                })
+                            }
+                        })
+
+                } else {
+
+                    await Player.findOne({ where: { firstname: player.player_name.split(' ').slice(-1).join(' ') }, })
+                        .then(async (data) => {
+
+                            if (data.dataValues) {
+                                return await new Promise((resolve, reject) => {
+                                    resolve(PlayerAttacking.create({
+
+                                        position: `${player.position}`, assist: `${player.assists}`, corner_taken: `${player.corner_taken}`, offsides: `${player.offsides}`, dribbles: `${player.dribbles}`,
+                                        matchplayed: `${player.match_played}`, Playerid: `${data.dataValues.id}`
+                                    }))
+                                })
+                            }
+                        })
+                }
+            })
+        })
+
+
         .catch((err) => {
             console.log(err);
         });

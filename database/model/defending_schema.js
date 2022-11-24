@@ -36,7 +36,10 @@ const Playerdefending = sequelize.define("playerdefending", {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
-
+    Playerid: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+    },
 });
 
 module.exports = Playerdefending;

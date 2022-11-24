@@ -36,7 +36,10 @@ const Playerdiscipline = sequelize.define("playerdisciplinary", {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
-
+    Playerid: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+    },
 });
 
 module.exports = Playerdiscipline

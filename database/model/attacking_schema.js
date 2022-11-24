@@ -32,7 +32,10 @@ const PlayerAttacking = sequelize.define("playerattacks", {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
-
+    Playerid: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+    },
 });
 
 module.exports = PlayerAttacking;

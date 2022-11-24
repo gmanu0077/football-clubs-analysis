@@ -30,10 +30,13 @@ const Playerkeystats = sequelize.define("playerstats", {
         allowNull: false,
     },
     distance_covered: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
     },
-
+    Playerid: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+    }
 });
 
 module.exports = Playerkeystats

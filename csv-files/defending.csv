@@ -1,4 +1,4 @@
-serial,player_name,club,position,balls_recoverd,tackles,t_won,t_lost,clearance_attempted,match_played
+serial,player_name,club,position,balls_recovered,tackles,t_won,t_lost,clearance_attempted,match_played
 01,Casemiro,Real Madrid,Midfielder,76,31,13,18,19,11
 01,Éder Militão,Real Madrid,Defender,76,19,6,13,32,12
 01,Reinildo,Atlético,Defender,76,13,6,7,20,10

@@ -5,32 +5,36 @@ const PlayerAttempts = sequelize.define("playerattempts", {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        allowNull: false,
+        //  allowNull: false,
         primaryKey: true,
     },
     position: {
         type: Sequelize.STRING,
-        allowNull: false,
+        //   allowNull: false,
     },
     total_attempts: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        //   allowNull: false,
     },
     on_target: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        //   allowNull: false,
     },
     off_target: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        //  allowNull: false,
     },
     blocked: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        //  allowNull: false,
     },
     matchplayed: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        //  allowNull: false,
+    },
+    Playerid: {
+        type: Sequelize.INTEGER,
+        // allowNull: true,
     },
 
 });
