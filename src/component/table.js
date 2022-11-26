@@ -1,31 +1,46 @@
 export default function Table(data) {
+    console.log(data.data, "datat")
+
     if (data) {
+        // data.data.map((res) => {
+        //     console.log(res)
+        //     // return (
+        //     //     <table className="striped">
+
+
+        //     //     </table>
+        //     // )
+        // })
         return (
-            <table className="striped">
+            <table className="striped #ff8a80 red accent-1">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Item Name</th>
-                        <th>Item Price</th>
+                        {
+                            Object.keys(data.data).map((head) => {
+                                console.log(head, "head")
+                                return (
+                                    <th>{head}</th>
+                                )
+
+                            })
+                        }
+
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr>
-                        <td>Alvin</td>
-                        <td>Eclair</td>
-                        <td>$0.87</td>
+                        {
+                            Object.values(data.data).map((value) => {
+                                console.log(value, "values")
+                                return (
+                                    <td>{value}</td>
+                                )
+
+                            })
+                        }
                     </tr>
-                    <tr>
-                        <td>Alan</td>
-                        <td>Jellybean</td>
-                        <td>$3.76</td>
-                    </tr>
-                    <tr>
-                        <td>Jonathan</td>
-                        <td>Lollipop</td>
-                        <td>$7.00</td>
-                    </tr>
+
                 </tbody>
             </table>
         )

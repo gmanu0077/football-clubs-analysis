@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 
-
+require('../sqlbuild')
 dotenv.config();
 
 app.use(
@@ -19,7 +19,6 @@ app.use(
     }
 );
 app.use(express.json());
-var port = process.env.PORT || 5000;
 
 const data = require('./route/route')
 

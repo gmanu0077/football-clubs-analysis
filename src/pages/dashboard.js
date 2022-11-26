@@ -1,13 +1,24 @@
 import { useEffect, useState } from 'react';
 import './dashboard.css'
 import Table from '../component/table';
+import axios from 'axios';
+import Bargraph from '../component/bargraph';
+import Heatmap from '../component/heatmap';
 function Dashboard() {
     const [player_name, setplayer_name] = useState(null)
     const [club_name, setclub_name] = useState(null)
     const [position, setposition] = useState(null)
     const [type, settype] = useState(null)
+    const [Flag, setFlag] = useState(false)
     const [Tabledata, setTabledata] = useState([])
+    const [bardata, setbardata] = useState([])
+    const [graphdata, setgraphdata] = useState([])
     useEffect(() => {
+
+        axios.get('http://localhost:5000').then(res => {
+            console.log(res, "res")
+            setTabledata(res.data)
+        })
 
     }, [])
 
@@ -25,11 +36,34 @@ function Dashboard() {
     };
 
 
-    const onSearchD = () => {
+    const onSearchD = async () => {
 
+        await axios.post('http://localhost:5000/data', {
+            player_name: player_name,
+            club_name: club_name,
+            position: position,
+            type: type
+        }).then((res) => {
+            console.log(res.data, "rere")
 
+            if (club_name && position) {
 
-        console.log("search ", player_name, club_name, position, type);
+                setbardata(res.data)
+            }
+            if (club_name && type) {
+                console.log("iff")
+                setgraphdata(res.data)
+
+            }
+            else setTabledata(res.data)
+
+        }).then(() => {
+            setFlag(true)
+
+            console.log("search ", player_name, club_name, position, type, graphdata, Tabledata);
+        })
+            .catch((err) => { console.log(err) })
+
     };
     return (
         <div className="dashboard">
@@ -59,9 +93,11 @@ function Dashboard() {
 
 
             </div>
-            <div className='display'>
-                <Table data={Tabledata} />
-
+            <div className='display text'>
+                {/* <Table data={Tabledata} /> */}
+                {/* {club_name && position && Flag && <Bargraph data={bardata} />} */}
+                {club_name && type && Flag && <Heatmap data={[1, 2, 3, 3]} />}
+                <div>{JSON.stringify(graphdata)}</div>
             </div>
 
         </div>
