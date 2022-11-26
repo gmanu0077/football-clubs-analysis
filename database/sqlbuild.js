@@ -1,6 +1,6 @@
 const csv = require('csv-parser')
 const fs = require('fs');
-
+const path = require('path');
 
 
 async function getdata() {
@@ -27,9 +27,8 @@ async function getdata() {
     const goals = []
     const keystats = []
 
-
     await new Promise((resolve, reject) => {
-        fs.createReadStream("C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/attacking.csv")
+        fs.createReadStream(path.join(__dirname, 'csv-files', 'attacking.csv'))
             .pipe(csv({}))
             .on('data', (data) => resolve(attacking.push(data)))
     }
