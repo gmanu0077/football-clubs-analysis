@@ -14,8 +14,7 @@ const playerkeystats = require('../../model/keystats_schema')
 const Player = require("../../model/player_schema");
 const Playerkeystats = require("../../model/keystats_schema");
 const Playergoals = require("../../model/goals_schema");
-router.route("/").get((req, res) => {
-    console.log("here");
+router.route("/").get((req, res) => { //THIS REQUEST IS FOR NIL CONDITION MENTIONED IN THE ASSIGNMENT
     var clubdata = {
         min_club: "",
         max_club: "",
@@ -36,33 +35,26 @@ router.route("/").get((req, res) => {
                 attributes: ['Playerid', 'goals']
             }).then((res) => {
                 res.map((ti) => goaldata.push(ti.dataValues))
-                //   console.log(res, "min")
                 max = goaldata[goaldata.length - 1]
                 secondmax = goaldata[goaldata.length - 2]
                 min = goaldata[0]
-                console.log(goaldata[0], "min")
-                console.log(goaldata[goaldata.length - 1], 'max')
-                console.log(goaldata[goaldata.length - 2], 'max-1')
+
             }).then(() => {
                 Player.findOne({ where: { id: `${max.Playerid}` } }).then(data => {
                     maxclub = data.dataValues.club
                     clubdata.max_club = maxclub
-                    console.log(data.dataValues.club, "maxclub")
-                    console.log(clubdata, "club")
+
                 })
             }).then(() => {
                 Player.findOne({ where: { id: `${min.Playerid}` } }).then(data => {
                     minclub = data.dataValues.club
                     clubdata.min_club = 'Liverpool'
-                    console.log(data.dataValues.club, "minclub")
-                    console.log(clubdata, "club")
                 })
             }).then(() => {
                 Player.findOne({ where: { id: `${secondmax.Playerid}` } }).then(data => {
                     secondmaxclub = data.dataValues.club
                     clubdata.secondmax_club = secondmaxclub
-                    console.log(data.dataValues.club, "secmaxclub")
-                    console.log(clubdata, "club")
+
                     res.json(clubdata)
                 })
             })
@@ -76,7 +68,7 @@ router.route("/").get((req, res) => {
 
 
 });
-router.route('/data').post((req, res) => {
+router.route('/data').post((req, res) => {//THIS IS FOR REST CONDITIONS IN ASSIGNENT
     console.log("post");
     const { player_name, club_name, position, type } = req.body
     const data = {

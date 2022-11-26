@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 
-require('../sqlbuild')
+require('../sqlbuild') //FOR RUNNING SQL QUERIES
 dotenv.config();
 
 app.use(

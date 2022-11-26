@@ -5,6 +5,15 @@
     justify-content: center;
 }
 
+body {
+    background-image: url('../bg.png');
+}
+
+table {
+    margin: 10%;
+    margin-left: 20%;
+}
+
 .search-container {
     background-color: rgba(255, 255, 255, 0.5);
     margin-top: 6%;
@@ -37,12 +46,25 @@ button {
 }
 
 .display {
-    width: max-content;
-    margin-left: 13%;
-    margin-top: 5%;
+    width: 80%;
+
     justify-content: center;
 }
 
 .graph {
+    margin-left: 16%;
     margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.content {
+    width: 100%;
+    justify-content: center;
+
+}
+
+.chart {
+    margin: 10%;
+    margin-left: 16%;
+    padding: auto;
 }
