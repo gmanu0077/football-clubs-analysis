@@ -93,11 +93,12 @@ function Dashboard() {
 
 
             </div>
-            <div className='display text'>
-                {/* <Table data={Tabledata} /> */}
-                {/* {club_name && position && Flag && <Bargraph data={bardata} />} */}
-                {club_name && type && Flag && <Heatmap data={[1, 2, 3, 3]} />}
-                <div>{JSON.stringify(graphdata)}</div>
+            <div className='display text' style={{
+                maxWidth: "1200px",
+            }}>
+                <Table data={Tabledata} />
+                {club_name && position && Flag && <Bargraph data={bardata} />}
+                {club_name && type && Flag && <Heatmap data={graphdata} />}
             </div>
 
         </div>

@@ -29,50 +29,50 @@ async function getdata() {
 
 
     await new Promise((resolve, reject) => {
-        fs.createReadStream('../csv-files/attacking.csv')
+        fs.createReadStream("C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/attacking.csv")
             .pipe(csv({}))
             .on('data', (data) => resolve(attacking.push(data)))
     }
     )
 
     await new Promise((resolve, reject) => {
-        fs.createReadStream('../csv-files/attempts.csv')
+        fs.createReadStream('C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/attempts.csv')
             .pipe(csv({}))
             .on('data', (data) => resolve(attempts.push(data)))
     })
 
     await new Promise((resolve, reject) => {
-        fs.createReadStream('../csv-files/defending.csv')
+        fs.createReadStream('C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/defending.csv')
             .pipe(csv({}))
             .on('data', (data) => resolve(defending.push(data)))
     })
 
     await new Promise((resolve, reject) => {
-        fs.createReadStream('../csv-files/disciplinary.csv')
+        fs.createReadStream('C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/disciplinary.csv')
             .pipe(csv({}))
             .on('data', (data) => resolve(disciplinary.push(data)))
     })
 
     await new Promise((resolve, reject) => {
-        fs.createReadStream('../csv-files/distributon.csv')
+        fs.createReadStream('C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/distributon.csv')
             .pipe(csv({}))
             .on('data', (data) => resolve(distribution.push(data)))
     })
 
     await new Promise((resolve, reject) => {
-        fs.createReadStream('../csv-files/goalKeeping.csv')
+        fs.createReadStream('C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/goalKeeping.csv')
             .pipe(csv({}))
             .on('data', (data) => resolve(goalkeeping.push(data)))
     })
 
     await new Promise((resolve, reject) => {
-        fs.createReadStream('../csv-files/goals.csv')
+        fs.createReadStream('C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/goals.csv')
             .pipe(csv({}))
             .on('data', (data) => { resolve(goals.push(data)) })
     })
 
     await new Promise((resolve, reject) => {
-        fs.createReadStream('../csv-files/Key_stats.csv')
+        fs.createReadStream('C:/Users/mohak/Documents/Workspace/Playground/newfolder/ringover/database/csv-files/Key_stats.csv')
             .pipe(csv({}))
             .on('data', (data) => resolve(keystats.push(data)))
     })

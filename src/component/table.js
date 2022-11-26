@@ -12,7 +12,9 @@ export default function Table(data) {
         //     // )
         // })
         return (
-            <table className="striped #ff8a80 red accent-1">
+            <table className="striped #ff8a80 red accent-1" style={{
+                maxWidth: "1200px",
+            }}>
                 <thead>
                     <tr>
                         {

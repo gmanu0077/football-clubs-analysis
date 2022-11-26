@@ -12,12 +12,12 @@ import {
     ChartYAxisItem,
 } from "@progress/kendo-react-charts";
 import Charts from './heatmap-chart';
-export default async function Heatmap(data) {
+function Heatmap(data) {
     const [chartdata, setchartdata] = useState([])
-    // console.log(data, "init")
 
     function getdata() {
         console.log(data, "init")
+        setchartdata(data)
         // const mapdata = []
         // const attackdata = {
         //     name: [], goals: [], assists: [], corners: [], offsides: [], dribbles: []
@@ -68,8 +68,8 @@ export default async function Heatmap(data) {
         // }
     }
     useEffect(() => {
+        // setchartdata(data)
         getdata()
-
     }, [])
 
     // function putdata() {
@@ -87,15 +87,11 @@ export default async function Heatmap(data) {
     // }
 
     return (
-        <div></div>
-        // <Charts data={chartdata} />
+        <>
+           <Charts data={chartdata} />
+        </>
     )
 
-
-
-
-
-
-
-
 }
+
+export default Heatmap
